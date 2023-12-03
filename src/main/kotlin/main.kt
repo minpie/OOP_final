@@ -27,9 +27,9 @@ fun main() {
                 val month = readLine()?.trim()?.toInt() ?: return
 
                 // 이벤트 날짜 목록 생성 (임의의 날짜로 예시)
-                val eventDates = listOf(parseDateString("2023/11/11"), parseDateString("2023/11/11"))
+                val startDates = readStartDatesFromFile()
 
-                printCalendar(year, month, eventDates)
+                printCalendar(year, month, startDates)
             }
             3 -> {
                 // 이벤트 추가
@@ -125,11 +125,11 @@ fun printCalendar(year: Int, month: Int, eventDates: List<Date>) {
     val lastDayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
 
     // 표 헤더 출력
-    println("일\t월\t화\t수\t목\t금\t토")
+    println("일\t\t월\t\t화\t\t수\t\t목\t\t금\t\t토")
 
     // 첫 번째 주의 날짜까지의 빈 칸 출력
     for (i in 1 until firstDayOfWeek) {
-        print("\t")
+        print("\t\t") // 각 날짜를 두 칸으로 늘림
     }
 
     // 날짜 및 이벤트 개수 출력
@@ -141,7 +141,7 @@ fun printCalendar(year: Int, month: Int, eventDates: List<Date>) {
         val eventCount = eventDates.count { isSameDay(it, currentDate.time) }
 
         // 날짜 출력 (빈 날짜에는 빈 칸 출력)
-        print("$day${if (eventCount > 0) "($eventCount)" else ""}\t")
+        print("${day}${if (eventCount > 0) "\t(${eventCount})" else "\t"}\t")
 
         // 줄바꿈 처리 (7일마다)
         if ((firstDayOfWeek + day - 1) % 7 == 0) {
@@ -177,6 +177,25 @@ fun searchAndPrintEvents(queryDate: Date) {
             }
         }
     }
+}
+
+fun readStartDatesFromFile(): List<Date> {
+    val filename = "events.txt"
+    val format = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
+    val startDates = mutableListOf<Date>()
+
+    File(filename).forEachLine { line ->
+        val eventInfo = line.split(" ")
+
+        if (eventInfo.size >= 8) { // 최소한의 길이를 확인하여 유효한 데이터로 간주
+            val startDateString = "${eventInfo[0]} ${eventInfo[1]}"
+            val startDate = format.parse(startDateString)
+
+            startDates.add(startDate)
+        }
+    }
+
+    return startDates
 }
 
 fun isSameDay(date1: Date, date2: Date): Boolean {
