@@ -1,10 +1,12 @@
 package mainapp
+import utils.*
 
 
 var isRunning = true
 
 
 fun main(){
+    var sess1:Control = Control()
     while(isRunning){
         // 메뉴 출력
         print("메뉴 번호를 선택하세요 (1: 종료, 2: 달력조회, 3: 이벤트 추가, 4: 이벤트 조회): ")
@@ -17,10 +19,19 @@ fun main(){
                 isRunning = false
             }
             2 -> {
+                // 달력 조회
+                print("년도를 입력하세요: ")
+                val year = readLine()?.trim()?.toInt() ?: return
+
+                print("월을 입력하세요: ")
+                val month = readLine()?.trim()?.toInt() ?: return
+                print(sess1.ShowCalenderMonth(year, month))
             }
             3 -> {
+
             }
             4 -> {
+
             }
         }
     }

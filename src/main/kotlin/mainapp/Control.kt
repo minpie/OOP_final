@@ -3,7 +3,7 @@ package mainapp
 import data.Calendar
 
 class Control {
-    var current_calendar:Calendar
+    lateinit var current_calendar:Calendar
 
     constructor(){
         current_calendar = Calendar()
@@ -28,5 +28,8 @@ class Control {
     }
     fun DeleteEvent(){
 
+    }
+    fun ShowCalenderMonth(year:Int, month:Int):String{
+        return current_calendar.PutCalendar(year, month)
     }
 }
