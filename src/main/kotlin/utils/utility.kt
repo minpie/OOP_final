@@ -1,4 +1,9 @@
 package utils
+
+import data.Event
+import java.util.*
+import java.util.Calendar
+
 fun IsLeapYear(year:Int):Boolean{
     if(year % 400 == 0)
         return true
@@ -59,4 +64,43 @@ fun GetNumToWeekStr(num:Int):String{
         else -> "ERR"
     }
     return rtn
+}
+
+fun createEventFromUserInput(type: String): Event {
+    print("이벤트 $type 날짜를 입력하십시오 (yyyy/mm/dd): ")
+    val dateInput = readLine()?.trim() ?: throw IllegalArgumentException("잘못된 입력입니다.")
+    val dateTimeInput = parseDateTime(dateInput)
+
+    print("이벤트 $type 시각을 입력하십시오 (hh:mm:ss): ")
+    val timeInput = readLine()?.trim() ?: throw IllegalArgumentException("잘못된 입력입니다.")
+    val timeArray = timeInput.split(":").map { it.toInt() }
+    dateTimeInput.set(Calendar.HOUR_OF_DAY, timeArray[0])
+    dateTimeInput.set(Calendar.MINUTE, timeArray[1])
+    dateTimeInput.set(Calendar.SECOND, timeArray[2])
+
+    print("이벤트 제목을 입력하십시오: ")
+    val title = readLine()?.trim() ?: throw IllegalArgumentException("잘못된 입력입니다.")
+
+    print("이벤트 내용을 입력하십시오: ")
+    val content = readLine()?.trim() ?: throw IllegalArgumentException("잘못된 입력입니다.")
+
+
+    return Event(
+        dateTimeInput.get(Calendar.YEAR),
+        dateTimeInput.get(Calendar.MONTH) + 1,
+        dateTimeInput.get(Calendar.DAY_OF_MONTH),
+        dateTimeInput.get(Calendar.HOUR_OF_DAY),
+        dateTimeInput.get(Calendar.MINUTE),
+        dateTimeInput.get(Calendar.SECOND),
+        type,  //시작 또는 종료 입력
+        title, //이벤트 제목 입력
+        content
+    )
+}
+
+fun parseDateTime(dateTimeString: String): Calendar {
+    val dateTimeArray = dateTimeString.split("/").map { it.toInt() }
+    val calendar = Calendar.getInstance()
+    calendar.set(dateTimeArray[0], dateTimeArray[1] - 1, dateTimeArray[2])
+    return calendar
 }

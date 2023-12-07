@@ -1,13 +1,30 @@
 package data
 
-class Event {
+import com.google.gson.Gson
+
+class Event(internal var when_year:Int,
+            internal var when_month:Int,
+            internal var when_day:Int,
+            internal var when_hour:Int,
+            internal var when_minute:Int,
+            internal var when_second:Int,
+            internal var type: String,
+            internal var title: String,
+            internal var content: String
+) {
     // Essential Property:
-    private var when_year:Int
-    private var when_month:Int
-    private var when_day:Int
-    private var when_hour:Int
-    private var when_minute:Int
-    private var when_second:Int
+    /*
+    internal var when_year:Int
+    internal var when_month:Int
+    internal var when_day:Int
+    internal var when_hour:Int
+    internal var when_minute:Int
+    internal var when_second:Int
+    var type: String
+    var title: String
+    var content: String
+
+
 
     // Essential Function:
     constructor(year:Int, month:Int, day:Int, hour: Int, minute:Int, second: Int){
@@ -18,6 +35,9 @@ class Event {
         when_minute = minute
         when_second = second
     }
+     */
+
+
     fun GetWhen(): Array<Int> = arrayOf(when_year, when_month, when_day, when_hour, when_minute, when_second)
     fun SetWhen(year:Int, month:Int, day:Int, hour: Int, minute:Int, second: Int){
         when_year = year
@@ -29,5 +49,10 @@ class Event {
     }
     fun toText():String{
         return "${when_year}.${when_month}.${when_day}.${when_hour}.${when_minute}.${when_second}"
+    }
+
+    fun toJSON(): String {
+        val gson = Gson()
+        return gson.toJson(this)
     }
 }

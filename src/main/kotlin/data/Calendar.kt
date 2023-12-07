@@ -1,6 +1,7 @@
 package data
 import utils.*
 import java.util.Calendar
+import com.google.gson.*
 
 class Calendar {
     private var events:ArrayList<Event>
@@ -8,8 +9,8 @@ class Calendar {
     constructor(){
         events = arrayListOf()
     }
-    fun AddEvent(year:Int, month:Int, day:Int, hour: Int, minute:Int, second: Int){
-        events.add(Event(year, month, day, hour, minute, second))
+    fun AddEvent(year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int, type: String, title: String, content: String) {
+        events.add(Event(year, month, day, hour, minute, second, type, title, content))
     }
     fun EditEvent(
         year:Int, month:Int, day:Int, hour: Int, minute:Int, second: Int,
@@ -79,6 +80,10 @@ class Calendar {
         result += "\n"
 
         return result
+    }
+
+    fun getEvents(): List<Event> {
+        return events
     }
 
 }
