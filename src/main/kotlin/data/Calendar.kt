@@ -34,7 +34,11 @@ class Calendar {
             val check_query = arrayOf(year, month, day)
             val dates = evnt.GetWhen()
             val check_target = arrayOf(dates[0], dates[1], dates[2])
-            if(check_query.equals(check_target)){
+            if(
+                (check_query[0] == dates[0]) &&
+                (check_query[1] == dates[1]) &&
+                (check_query[2] == dates[2])
+                ){
                 rtn.add(evnt)
             }
         }
@@ -86,4 +90,11 @@ class Calendar {
         return events
     }
 
+    /*
+    fun toJSON(): String {
+        val gson = Gson()
+        return gson.toJson(this)
+    }
+
+    */
 }

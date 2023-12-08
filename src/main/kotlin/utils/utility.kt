@@ -1,8 +1,6 @@
 package utils
 
 import data.Event
-import java.util.*
-import java.util.Calendar
 
 fun IsLeapYear(year:Int):Boolean{
     if(year % 400 == 0)
@@ -66,6 +64,37 @@ fun GetNumToWeekStr(num:Int):String{
     return rtn
 }
 
+
+
+fun GetNumInt(msg:String):Int{
+    var ret:Int? = 0
+    println(msg)
+    while(true){
+        ret = readLine()?.trim()?.toInt()
+        if(ret != null){
+            break
+        }
+        println("정수를 입력해주세요!")
+    }
+    return ret!!
+}
+
+
+fun GetString(msg:String):String{
+    var ret:String? = ""
+    println(msg)
+    while(true){
+        ret = readLine()?.trim()?.toString()
+        if(ret != null){
+            break
+        }
+        println("내용을 입력해주세요!")
+    }
+    return ret!!
+}
+
+/*
+
 fun createEventFromUserInput(type: String): Event {
     print("이벤트 $type 날짜를 입력하십시오 (yyyy/mm/dd): ")
     val dateInput = readLine()?.trim() ?: throw IllegalArgumentException("잘못된 입력입니다.")
@@ -104,3 +133,5 @@ fun parseDateTime(dateTimeString: String): Calendar {
     calendar.set(dateTimeArray[0], dateTimeArray[1] - 1, dateTimeArray[2])
     return calendar
 }
+
+ */

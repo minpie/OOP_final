@@ -17,6 +17,8 @@ class Control {
     }
     fun SaveCalendar(fname: String) {
         val gson = Gson()
+        File(fname).writeText(gson.toJson(current_calendar))
+        /*
 
         // 실제로 저장할 이벤트 리스트
         val eventsToSave = current_calendar.getEvents().map {
@@ -40,14 +42,85 @@ class Control {
         }
 
         println("캘린더가 성공적으로 저장되었습니다.")
+
+         */
+
     }
     fun LoadCalendar(fname:String){
+        if(!File(fname).exists()){
+            return
+        }
+        val jsonString = File(fname).readText()
+        current_calendar = Gson().fromJson(jsonString, Calendar::class.java)
 
+
+
+
+        /*
+        print("날짜를 입력하세요 (yyyy/mm/dd) : ")
+        val userInput = readLine()?.trim()
+
+        if (!userInput.isNullOrBlank()) {
+            val (year, month, day) = userInput.split("/").takeIf { it.size == 3 } ?: run {
+                println("잘못된 입력입니다.")
+                return
+            }
+
+            val events = jsonString.split("\n")
+
+            println("\n")
+            println("$userInput 의 이벤트 정보")
+            print("-------------------------------------------------------- \n\n")
+
+            val matchingEvents = events.filterIndexed { index, eventData ->
+                if (index % 2 == 0) {
+                    val eventInfo = parseEventInfo(eventData)
+
+                    val eventYear = eventInfo.date.substringBefore("/").toIntOrNull()
+                    val eventMonth = eventInfo.date.substringAfter("/").substringBefore("/").toIntOrNull()
+                    val eventDay = eventInfo.date.substringAfterLast("/").toIntOrNull()
+
+                    val isMatchingDate = year.toInt() == eventYear && month.toInt() == eventMonth && day.toInt() == eventDay
+
+
+                    if (isMatchingDate) {
+
+                        // 필터링된 데이터가 원본 데이터의 N번째 일때, N번째 데이터 출력
+                        val currentEventData = events[index]
+                        val currentEventInfo = parseEventInfo(currentEventData)
+                        println("[이벤트 시작 날짜] : ${currentEventInfo.date}")
+                        println("[이벤트 종료 날짜] : ${currentEventInfo.date}")
+                        println("[이벤트 제목] : ${currentEventInfo.title}")
+                        println("[이벤트 내용] : ${currentEventInfo.content} \n")
+
+                        // N+1 번째 데이터 출력
+                        if (index + 1 < events.size) {
+                            val nextEventData = events[index + 1]
+                            val nextEventInfo = parseEventInfo(nextEventData)
+                            println("[이벤트 시작 날짜] : ${nextEventInfo.date}")
+                            println("[이벤트 종료 날짜] : ${nextEventInfo.date}")
+                            println("[이벤트 제목] : ${nextEventInfo.title}")
+                            println("[이벤트 내용] : ${nextEventInfo.content}")
+                            print("-------------------------------------------------------- \n")
+                        } else {
+                            println("다음 데이터가 없습니다.")
+                        }
+                    }
+                    isMatchingDate
+                } else {
+                    false
+                }
+            }
+        }
+        */
     }
     fun CheckEvent(){
 
     }
-    fun AddEvent() {
+    fun AddEvent(year:Int, month:Int, day:Int, hour: Int, minute:Int, second: Int, type:String, title:String, content:String) {
+        current_calendar.AddEvent(year, month, day, hour, minute, second, type, title, content)
+
+        /*
         println("이벤트를 추가합니다.")
         val startEvent = createEventFromUserInput("시작")
         println("시작 이벤트: $startEvent")
@@ -75,6 +148,8 @@ class Control {
         val endJsonString = gson.toJson(endEvent)
         File("event.txt").appendText("$startJsonString\n$endJsonString\n")
         println("이벤트가 성공적으로 저장되었습니다.")
+
+         */
     }
     fun EditEvent(){
 
