@@ -1,7 +1,5 @@
 package utils
 
-import data.Event
-
 fun IsLeapYear(year:Int):Boolean{
     if(year % 400 == 0)
         return true
@@ -92,6 +90,18 @@ fun GetString(msg:String):String{
     }
     return ret!!
 }
+
+
+fun ParseDateStr(dateString: String):Array<Int>{
+    val dateArray:Array<Int> = dateString.split("/").map { it.toInt() }.toTypedArray()
+    return dateArray
+}
+
+fun ParseTimeStr(timeString: String):Array<Int>{
+    val timeArray:Array<Int> = timeString.split("/").map { it.toInt() }.toTypedArray()
+    return timeArray
+}
+
 
 /*
 

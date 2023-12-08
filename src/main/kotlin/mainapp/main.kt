@@ -39,29 +39,43 @@ fun main() {
                 println("이벤트를 추가합니다.")
 
                 println("이벤트 시작 시점:")
+                val startDate = ParseDateStr(GetString("년/월/일 을 입력하세요(yyyy/mm/dd):"))
+                val startTime = ParseTimeStr(GetString("시/분/초 를 입력하세요(hh/mm/ss):"))
+                /*
                 val startYear = GetNumInt("년도를 입력하세요: ")
                 val startMonth = GetNumInt("월을 입력하세요: ")
                 val startDay = GetNumInt("일을 입력하세요: ")
                 val startHour = GetNumInt("시간을 입력하세요: ")
                 val startMinute = GetNumInt("분을 입력하세요: ")
                 val startSecond = GetNumInt("초를 입력하세요: ")
+
+                 */
                 val startType = GetString("종류를 입력하세요:")
                 val startTitle = GetString("제목을 입력하세요:")
                 val startContent = GetString("내용을 입력하세요:")
 
                 println("이벤트 종료 시점:")
+                val endDate = ParseDateStr(GetString("년/월/일 을 입력하세요(yyyy/mm/dd):"))
+                val endTime = ParseTimeStr(GetString("시/분/초 를 입력하세요(hh/mm/ss):"))
+                /*
                 val endYear = GetNumInt("년도를 입력하세요: ")
                 val endMonth = GetNumInt("월을 입력하세요: ")
                 val endDay = GetNumInt("일을 입력하세요: ")
                 val endHour = GetNumInt("시간을 입력하세요: ")
                 val endMinute = GetNumInt("분을 입력하세요: ")
                 val endSecond = GetNumInt("초를 입력하세요: ")
+                */
                 val endType = GetString("종류를 입력하세요:")
                 val endTitle = GetString("제목을 입력하세요:")
                 val endContent = GetString("내용을 입력하세요:")
 
-                sess1.current_calendar.AddEvent(startYear, startMonth, startDay, startHour, startMinute, startSecond, startType, startTitle, startContent)
-                sess1.current_calendar.AddEvent(endYear, endMonth, endDay, endHour, endMinute, endSecond, endType, endTitle, endContent)
+                sess1.current_calendar.AddEvent(startDate[0], startDate[1], startDate[2], startTime[0], startTime[1], startTime[2], startType, startTitle, startContent)
+                sess1.current_calendar.AddEvent(endDate[0], endDate[1], endDate[2], endTime[0], endTime[1], endTime[2], endType, endTitle, endContent)
+
+
+
+                //sess1.current_calendar.AddEvent(startYear, startMonth, startDay, startHour, startMinute, startSecond, startType, startTitle, startContent)
+                //sess1.current_calendar.AddEvent(endYear, endMonth, endDay, endHour, endMinute, endSecond, endType, endTitle, endContent)
 
                 println("이벤트가 추가되었습니다.")
             }
