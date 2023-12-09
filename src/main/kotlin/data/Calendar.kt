@@ -10,50 +10,11 @@ class Calendar {
     fun AddEvent(year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int, type: String, title: String, content: String) {
         events.add(Event(year, month, day, hour, minute, second, type, title, content))
     }
-    fun EditEvent(
-        year:Int, month:Int, day:Int, hour: Int, minute:Int, second: Int,
-        year2:Int, month2:Int, day2:Int, hour2: Int, minute2:Int, second2: Int
-    ){
-        var evnt:Event? = FindEvent(year, month, day, hour, minute, second)
-        if(evnt !== null){
-            evnt.SetWhen(year2,  month2, day2, hour2, minute2, second2)
-        }
-
-    }
-    fun DeleteEvent(year:Int, month:Int, day:Int, hour: Int, minute:Int, second: Int){
-        var evnt:Event? = FindEvent(year, month, day, hour, minute, second)
-        if(evnt !== null){
+    fun DeleteEvent(evnt:Event?){
+        if(evnt != null){
             events.remove(evnt)
         }
     }
-    fun FindEvent(year:Int, month:Int, day:Int):ArrayList<Event>{
-        var rtn: ArrayList<Event> = arrayListOf()
-        for (evnt in events){
-            val check_query = arrayOf(year, month, day)
-            val dates = evnt.GetWhen()
-            val check_target = arrayOf(dates[0], dates[1], dates[2])
-            if(
-                (check_query[0] == dates[0]) &&
-                (check_query[1] == dates[1]) &&
-                (check_query[2] == dates[2])
-                ){
-                rtn.add(evnt)
-            }
-        }
-        return rtn
-    }
-    fun FindEvent(year:Int, month:Int, day:Int, hour: Int, minute:Int, second: Int):Event?{
-        var rtn: Event? = null
-        for (evnt in events){
-            val check_query = arrayOf(year, month, day, hour, minute, second)
-            if(check_query.equals(evnt)){
-                rtn = evnt
-                break
-            }
-        }
-        return rtn
-    }
-
     fun PutCalendar(year:Int, month:Int):String{
         // Variable:
         var result:String = ""
@@ -72,7 +33,7 @@ class Calendar {
         // 날짜 & 이벤트 개수 출력하기:
         for(day in 1..lastDayOfMonth){
             // 날짜 출력 (빈 날짜에는 빈 칸 출력)
-            val eventCount = FindEvent(year, month, day).size // 해당 날짜의 이벤트 수 /TEST
+            val eventCount = FindAllEventByDate(year, month, day).size // 해당 날짜의 이벤트 수 /TEST
             result += "${day}${if (eventCount > 0) "\t(${eventCount})" else "\t"}\t"
             // 줄바꿈 처리 (7일마다)
             if ((firstDayOfMonth + day - 1) % 7 == 0) {
@@ -83,16 +44,79 @@ class Calendar {
 
         return result
     }
-
     fun getEvents(): List<Event> {
         return events
     }
-
-    /*
-    fun toJSON(): String {
-        val gson = Gson()
-        return gson.toJson(this)
+    fun FindAllEventByDate(year:Int, month:Int, day:Int):ArrayList<Event>{
+        var rtn: ArrayList<Event> = arrayListOf()
+        for (evnt in events){
+            val check_query = arrayOf(year, month, day)
+            val dates = evnt.GetWhen()
+            val check_target = arrayOf(dates[0], dates[1], dates[2])
+            if(
+                (check_query[0] == dates[0]) &&
+                (check_query[1] == dates[1]) &&
+                (check_query[2] == dates[2])
+            ){
+                rtn.add(evnt)
+            }
+        }
+        return rtn
     }
-
-    */
+    fun FindAllEventByTitle(title:String): ArrayList<Event> {
+        var rtn: ArrayList<Event> = arrayListOf()
+        for (evnt in events){
+            val contentArray = evnt.GetContent()
+            if (
+                (title.isEmpty() || title == contentArray[1])
+            ) {
+                rtn.add(evnt)
+            }
+        }
+        return rtn
+    }
+    fun FindAllEventByContent(content:String): ArrayList<Event> {
+        var rtn: ArrayList<Event> = arrayListOf()
+        for (evnt in events){
+            val contentArray = evnt.GetContent()
+            if (
+                (content.isEmpty() || content == contentArray[2])
+            ) {
+                rtn.add(evnt)
+            }
+        }
+        return rtn
+    }
+    fun FindEvent(year:Int, month:Int, day:Int, hour: Int, minute:Int, second: Int, eventType: String, eventTitle: String, eventContent: String):Event?{
+        var rtn: Event? = null
+        for (evnt in events){
+            val check_query = arrayOf(year, month, day, hour, minute, second)
+            val contentArray = evnt.GetContent()
+            if (
+                check_query.contentEquals(evnt.GetWhen()) &&
+                (eventType.isEmpty() || eventType == contentArray[0]) &&
+                (eventTitle.isEmpty() || eventTitle == contentArray[1]) &&
+                (eventContent.isEmpty() || eventContent == contentArray[2])
+            ) {
+                return evnt
+            }
+        }
+        return null
+    }
+    fun EditEventTime(evnt:Event?, year2: Int, month2: Int, day2: Int, hour2: Int, minute2: Int, second2: Int) {
+        if(evnt != null){
+            evnt.SetWhen(year2, month2, day2, hour2, minute2, second2)
+        }
+    }
+    fun EditEventContent(evnt:Event?, eventType: String, eventTitle: String, eventContent: String){
+        if(evnt != null){
+            evnt.SetContent(eventType, eventTitle, eventContent)
+        }
+    }
+    fun PutEventText(evnt:Event?): String? {
+        if(evnt != null){
+            return evnt.toText()
+        }
+        return null
+    }
 }
